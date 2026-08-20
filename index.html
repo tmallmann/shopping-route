@@ -3,10 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Rota de Compras</title>
 
     <style>
@@ -28,12 +25,13 @@
             color: #20242c;
         }
 
-        button {
+        button,
+        input {
             font-family: inherit;
         }
 
         .app {
-            max-width: 540px;
+            max-width: 700px;
             min-height: 100vh;
             margin: auto;
             background: white;
@@ -62,8 +60,7 @@
         ===================================================== */
         .resumo {
             display: grid;
-            grid-template-columns:
-                repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             padding: 0 18px 18px;
         }
@@ -97,6 +94,41 @@
             font-size: 18px;
             font-weight: 700;
             margin: 12px 0;
+        }
+
+        /* =====================================================
+           BUSCA
+        ===================================================== */
+        .busca-wrapper {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .busca {
+            width: 100%;
+            height: 46px;
+            border: 1px solid #e1e3e7;
+            background: #f7f8f9;
+            border-radius: 13px;
+            padding: 0 15px 0 42px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .busca:focus {
+            background: white;
+            border-color: #bfc3ca;
+            box-shadow: 0 0 0 3px rgba(23, 26, 32, 0.06);
+        }
+
+        .busca-icone {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+            pointer-events: none;
         }
 
         /* =====================================================
@@ -163,44 +195,61 @@
         }
 
         /* =====================================================
+           CONTADOR DA CATEGORIA
+        ===================================================== */
+        .categoria-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2px 2px 10px;
+        }
+
+        .categoria-info strong {
+            font-size: 13px;
+        }
+
+        .categoria-info span {
+            color: #9297a0;
+            font-size: 11px;
+        }
+
+        /* =====================================================
            PRODUTOS
         ===================================================== */
         .produtos-grid {
             display: grid;
-            grid-template-columns:
-                1fr 1fr;
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
             margin-bottom: 32px;
         }
 
         .produto-card {
-            border: 1px solid #e8e9ec;
+            min-width: 0;
+            border: 1px solid #e6e7ea;
             background: white;
-            border-radius: 16px;
-            padding: 15px;
+            border-radius: 13px;
+            padding: 10px 9px;
             transition: 0.15s;
         }
 
         .produto-card.ativo {
-            background: #f5f6f7;
-            border-color: #cfd2d8;
+            background: #f1f2f4;
+            border-color: #bfc3ca;
         }
 
         .produto-icone {
-            font-size: 27px;
-            margin-bottom: 8px;
+            font-size: 20px;
+            line-height: 1;
+            margin-bottom: 7px;
         }
 
         .produto-nome {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .produto-corredor {
-            color: #8a909a;
-            font-size: 11px;
-            margin-bottom: 13px;
+            font-size: 12px;
+            font-weight: 650;
+            line-height: 1.25;
+            min-height: 30px;
+            display: flex;
+            align-items: flex-start;
         }
 
         /* =====================================================
@@ -211,18 +260,22 @@
             align-items: center;
             justify-content: space-between;
             background: #eef0f2;
-            border-radius: 11px;
+            border-radius: 9px;
             overflow: hidden;
+            margin-top: 8px;
         }
 
         .produto-controle button {
-            width: 38px;
-            height: 34px;
+            width: 28px;
+            height: 28px;
             border: none;
             background: transparent;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 17px;
             color: #20242c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .produto-controle button:hover {
@@ -230,10 +283,29 @@
         }
 
         .quantidade {
-            min-width: 30px;
+            min-width: 22px;
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
+        }
+
+        /* =====================================================
+           RESULTADO DA BUSCA
+        ===================================================== */
+        .busca-resultado {
+            color: #858b96;
+            font-size: 12px;
+            margin: -5px 2px 10px;
+        }
+
+        .sem-resultados {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 15px;
+            background: #f7f7f8;
+            border-radius: 15px;
+            color: #999;
+            font-size: 13px;
         }
 
         /* =====================================================
@@ -282,7 +354,6 @@
             margin: 10px 0;
             position: relative;
             transition: 0.2s;
-
         }
 
         .corredor.percorrido {
@@ -320,8 +391,7 @@
             cursor: pointer;
         }
 
-        .corredor.percorrido
-        .corredor-titulo {
+        .corredor.percorrido .corredor-titulo {
             text-decoration: line-through;
             color: #8c9098;
         }
@@ -337,43 +407,74 @@
         }
 
         /* =====================================================
-           PRODUTOS NA ROTA
+        PRODUTOS NA ROTA
         ===================================================== */
         .rota-produto {
             display: flex;
             align-items: center;
-            gap: 7px;
-            padding: 5px 0;
+            gap: 8px;
+            padding: 7px 0;
             color: #666;
             font-size: 13px;
-
         }
-        .corredor.percorrido
-        .rota-produto {
+
+        .rota-produto-check {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            accent-color: #171a20;
+            cursor: pointer;
+        }
+
+        .rota-produto-info {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rota-produto-nome {
+            flex: 1;
+        }
+
+        .rota-produto.quantidade-finalizada
+        .rota-produto-nome {
             text-decoration: line-through;
             color: #aaa;
+        }
+
+        .rota-produto.quantidade-finalizada {
+            opacity: 0.7;
+        }
+
+        .rota-progresso {
+            color: #858b96;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
         /* =====================================================
            RESPONSIVO
         ===================================================== */
-        @media (max-width: 390px) {.produtos-grid {grid-template-columns: 1fr;}}
+        @media (max-width: 560px) {
+            .produtos-grid {grid-template-columns: repeat(3, 1fr);}
+        }
+
+        @media (max-width: 390px) {
+            .produtos-grid {grid-template-columns: repeat(2, 1fr);}
+            .produto-card {padding: 10px;}
+            .produto-nome {font-size: 12px;}
+        }
     </style>
 </head>
 <body>
 
 <div class="app">
-    <!-- =====================================================
-         CABEÇALHO
-    ====================================================== -->
-
     <header>
-        <h1>
-            🛒 Minha compra
-        </h1>
-        <p>
-            Selecione os produtos que deseja comprar.
-        </p>
+        <h1>🛒 Minha compra</h1>
+        <p>Encontre rapidamente os produtos que deseja comprar.</p>
     </header>
 
     <!-- =====================================================
@@ -381,43 +482,41 @@
     ====================================================== -->
     <div class="resumo">
         <div class="resumo-card">
-            <strong id="totalItens">
-                0
-            </strong>
-            <span>
-                Itens
-            </span>
+            <strong id="totalItens">0</strong>
+            <span>Itens</span>
         </div>
-
         <div class="resumo-card">
-            <strong id="totalCorredores">
-                0
-            </strong>
-            <span>
-                Corredores
-            </span>
+            <strong id="totalCorredores">0</strong>
+            <span>Corredores</span>
         </div>
-
         <div class="resumo-card">
-            <strong id="corredoresPercorridos">
-                0
-            </strong>
-            <span>
-                Percorridos
-            </span>
+            <strong id="corredoresPercorridos">0</strong>
+            <span>Percorridos</span>
         </div>
     </div>
     <main>
 
         <!-- =================================================
-             CATEGORIAS
+             SELEÇÃO
         ================================================== -->
         <h2 class="titulo-secao">
             Escolha os produtos
         </h2>
 
-        <div class="categorias-wrapper">
+        <!-- BUSCA -->
+        <div class="busca-wrapper">
+            <span class="busca-icone">🔎</span>
+            <input
+                id="busca"
+                class="busca"
+                type="search"
+                placeholder="Buscar produto..."
+                autocomplete="off"
+            >
+        </div>
 
+        <!-- CATEGORIAS -->
+        <div class="categorias-wrapper">
             <button
                 class="seta-categoria"
                 onclick="moverCategorias(-1)"
@@ -425,12 +524,10 @@
             >
                 ‹
             </button>
-
             <div
                 id="categorias"
                 class="categorias"
             ></div>
-
             <button
                 class="seta-categoria"
                 onclick="moverCategorias(1)"
@@ -439,10 +536,14 @@
                 ›
             </button>
         </div>
+        <div class="categoria-info">
+            <strong id="categoriaNome">
+                Frutas e verduras
+            </strong>
+            <span id="categoriaQuantidade"></span>
+        </div>
 
-        <!-- =================================================
-             PRODUTOS
-        ================================================== -->
+        <!-- PRODUTOS -->
         <div
             id="produtos"
             class="produtos-grid"
@@ -452,21 +553,19 @@
              ROTA
         ================================================== -->
         <div class="rota-container">
-
             <h2 class="titulo-secao">
                 🚶 Sua rota
             </h2>
-
             <div id="rota">
-
                 <div class="rota-vazia">
-                    Escolha os produtos acima para montar sua rota.
+                    🛒
+                    <br><br>
+                    Selecione os produtos para montar sua rota.
                 </div>
             </div>
         </div>
     </main>
 </div>
-
 <script>
 
     // =========================================================
@@ -474,155 +573,177 @@
     // =========================================================
     const categorias = {
         "Frutas e verduras": [
-            {
-                nome: "Banana",
-                icone: "🍌",
-                corredor: 1
-            },
-            {
-                nome: "Maçã",
-                icone: "🍎",
-                corredor: 1
-            },
-            {
-                nome: "Tomate",
-                icone: "🍅",
-                corredor: 1
-            },
-            {
-                nome: "Batata",
-                icone: "🥔",
-                corredor: 1
-            }
+            {nome:"Banana",icone:"🍌",corredor:1},
+            {nome:"Maçã",icone:"🍎",corredor:1},
+            {nome:"Laranja",icone:"🍊",corredor:1},
+            {nome:"Limão",icone:"🍋",corredor:1},
+            {nome:"Abacaxi",icone:"🍍",corredor:1},
+            {nome:"Manga",icone:"🥭",corredor:1},
+            {nome:"Mamão",icone:"🥭",corredor:1},
+            {nome:"Melancia",icone:"🍉",corredor:1},
+            {nome:"Morango",icone:"🍓",corredor:1},
+            {nome:"Uva",icone:"🍇",corredor:1},
+            {nome:"Pera",icone:"🍐",corredor:1},
+            {nome:"Abacate",icone:"🥑",corredor:1},
+            {nome:"Tomate",icone:"🍅",corredor:1},
+            {nome:"Batata",icone:"🥔",corredor:1},
+            {nome:"Cebola",icone:"🧅",corredor:1},
+            {nome:"Alho",icone:"🧄",corredor:1},
+            {nome:"Cenoura",icone:"🥕",corredor:1},
+            {nome:"Pepino",icone:"🥒",corredor:1},
+            {nome:"Alface",icone:"🥬",corredor:1},
+            {nome:"Brócolis",icone:"🥦",corredor:1}
         ],
-
+        "Carnes": [
+            {nome:"Carne bovina",icone:"🥩",corredor:2},
+            {nome:"Bife",icone:"🥩",corredor:2},
+            {nome:"Carne moída",icone:"🥩",corredor:2},
+            {nome:"Frango",icone:"🍗",corredor:2},
+            {nome:"Peito de frango",icone:"🍗",corredor:2},
+            {nome:"Coxa de frango",icone:"🍗",corredor:2},
+            {nome:"Linguiça",icone:"🌭",corredor:2},
+            {nome:"Salsicha",icone:"🌭",corredor:2},
+            {nome:"Carne suína",icone:"🥩",corredor:2},
+            {nome:"Bacon",icone:"🥓",corredor:2},
+            {nome:"Peixe",icone:"🐟",corredor:2},
+            {nome:"Filé de peixe",icone:"🐟",corredor:2},
+            {nome:"Camarão",icone:"🍤",corredor:2}
+        ],
         "Laticínios": [
-            {
-                nome: "Leite",
-                icone: "🥛",
-                corredor: 2
-            },
-            {
-                nome: "Queijo",
-                icone: "🧀",
-                corredor: 2
-            },
-            {
-                nome: "Iogurte",
-                icone: "🥛",
-                corredor: 2
-            },
-            {
-                nome: "Manteiga",
-                icone: "🧈",
-                corredor: 2
-            }
+            {nome:"Leite",icone:"🥛",corredor:3},
+            {nome:"Leite em pó",icone:"🥛",corredor:3},
+            {nome:"Queijo",icone:"🧀",corredor:3},
+            {nome:"Presunto",icone:"🥓",corredor:3},
+            {nome:"Iogurte",icone:"🥛",corredor:3},
+            {nome:"Manteiga",icone:"🧈",corredor:3},
+            {nome:"Margarina",icone:"🧈",corredor:3},
+            {nome:"Requeijão",icone:"🧀",corredor:3},
+            {nome:"Creme de leite",icone:"🥛",corredor:3}
         ],
-
         "Bebidas": [
-            {
-                nome: "Café",
-                icone: "☕",
-                corredor: 3
-            },
-            {
-                nome: "Suco",
-                icone: "🧃",
-                corredor: 7
-            },
-            {
-                nome: "Refrigerante",
-                icone: "🥤",
-                corredor: 7
-            },
-            {
-                nome: "Água",
-                icone: "💧",
-                corredor: 7
-            }
+            {nome:"Água",icone:"💧",corredor:4},
+            {nome:"Água com gás",icone:"💧",corredor:4},
+            {nome:"Suco",icone:"🧃",corredor:4},
+            {nome:"Refrigerante",icone:"🥤",corredor:4},
+            {nome:"Chá gelado",icone:"🧋",corredor:4},
+            {nome:"Energético",icone:"🥤",corredor:4},
+            {nome:"Água de coco",icone:"🥥",corredor:4}
         ],
-
+        "Café e café da manhã": [
+            {nome:"Café",icone:"☕",corredor:5},
+            {nome:"Chá",icone:"🍵",corredor:5},
+            {nome:"Achocolatado",icone:"🥛",corredor:5},
+            {nome:"Aveia",icone:"🌾",corredor:5},
+            {nome:"Granola",icone:"🥣",corredor:5},
+            {nome:"Mel",icone:"🍯",corredor:5},
+            {nome:"Geleia",icone:"🍓",corredor:5},
+            {nome:"Pão de forma",icone:"🍞",corredor:5},
+            {nome:"Pão francês",icone:"🥖",corredor:5},
+            {nome:"Torrada",icone:"🍞",corredor:5}
+        ],
         "Biscoitos e cereais": [
-            {
-                nome: "Biscoito",
-                icone: "🍪",
-                corredor: 4
-            },
-            {
-                nome: "Cereal",
-                icone: "🥣",
-                corredor: 4
-            },
-            {
-                nome: "Bolacha",
-                icone: "🍪",
-                corredor: 4
-            }
+            {nome:"Biscoito",icone:"🍪",corredor:6},
+            {nome:"Bolacha",icone:"🍪",corredor:6},
+            {nome:"Cereal",icone:"🥣",corredor:6},
+            {nome:"Barra de cereal",icone:"🍫",corredor:6},
+            {nome:"Granola",icone:"🥣",corredor:6}
         ],
-
         "Mercearia": [
-            {
-                nome: "Arroz",
-                icone: "🍚",
-                corredor: 5
-            },
-            {
-                nome: "Feijão",
-                icone: "🫘",
-                corredor: 5
-            },
-            {
-                nome: "Açúcar",
-                icone: "🍬",
-                corredor: 5
-            },
-            {
-                nome: "Macarrão",
-                icone: "🍝",
-                corredor: 6
-            },
-            {
-                nome: "Lasanha",
-                icone: "🍝",
-                corredor: 6
-            }
+            {nome:"Arroz",icone:"🍚",corredor:7},
+            {nome:"Arroz integral",icone:"🍚",corredor:7},
+            {nome:"Feijão",icone:"🫘",corredor:7},
+            {nome:"Lentilha",icone:"🫘",corredor:7},
+            {nome:"Grão-de-bico",icone:"🫘",corredor:7},
+            {nome:"Açúcar",icone:"🍬",corredor:7},
+            {nome:"Sal",icone:"🧂",corredor:7},
+            {nome:"Farinha de trigo",icone:"🌾",corredor:7},
+            {nome:"Farinha de mandioca",icone:"🌾",corredor:7},
+            {nome:"Fubá",icone:"🌽",corredor:7},
+            {nome:"Amido de milho",icone:"🌽",corredor:7},
+            {nome:"Macarrão",icone:"🍝",corredor:8},
+            {nome:"Espaguete",icone:"🍝",corredor:8},
+            {nome:"Lasanha",icone:"🍝",corredor:8},
+            {nome:"Molho de tomate",icone:"🍅",corredor:8},
+            {nome:"Milho",icone:"🌽",corredor:8},
+            {nome:"Ervilha",icone:"🫛",corredor:8},
+            {nome:"Atum",icone:"🐟",corredor:8},
+            {nome:"Sardinha",icone:"🐟",corredor:8},
+            {nome:"Azeitona",icone:"🫒",corredor:8},
+            {nome:"Palmito",icone:"🥫",corredor:8},
+            {nome:"Maionese",icone:"🥫",corredor:8},
+            {nome:"Ketchup",icone:"🍅",corredor:8},
+            {nome:"Mostarda",icone:"🌭",corredor:8},
+            {nome:"Vinagre",icone:"🍶",corredor:8},
+            {nome:"Azeite",icone:"🫒",corredor:8},
+            {nome:"Óleo",icone:"🫗",corredor:8}
         ],
-
-        "Limpeza": [
-            {
-                nome: "Detergente",
-                icone: "🧴",
-                corredor: 8
-            },
-            {
-                nome: "Sabão em pó",
-                icone: "🧼",
-                corredor: 8
-            },
-            {
-                nome: "Esponja",
-                icone: "🧽",
-                corredor: 8
-            }
-
+        "Congelados": [
+            {nome:"Pizza",icone:"🍕",corredor:9},
+            {nome:"Hambúrguer",icone:"🍔",corredor:9},
+            {nome:"Batata",icone:"🍟",corredor:9},
+            {nome:"Nuggets",icone:"🍗",corredor:9},
+            {nome:"Legumes",icone:"🥦",corredor:9},
+            {nome:"Lasanha",icone:"🍝",corredor:9},
+            {nome:"Sorvete",icone:"🍦",corredor:9},
+            {nome:"Açaí",icone:"🫐",corredor:9}
         ],
-
+        "Doces e chocolates": [
+            {nome:"Chocolate",icone:"🍫",corredor:10},
+            {nome:"Bombom",icone:"🍫",corredor:10},
+            {nome:"Bala",icone:"🍬",corredor:10},
+            {nome:"Pirulito",icone:"🍭",corredor:10},
+            {nome:"Chiclete",icone:"🍬",corredor:10},
+            {nome:"Paçoca",icone:"🥜",corredor:10},
+            {nome:"Doce de leite",icone:"🍯",corredor:10},
+            {nome:"Pudim",icone:"🍮",corredor:10},
+            {nome:"Gelatina",icone:"🍮",corredor:10}
+        ],
         "Higiene": [
-            {
-                nome: "Papel higiênico",
-                icone: "🧻",
-                corredor: 9
-            },
-            {
-                nome: "Shampoo",
-                icone: "🧴",
-                corredor: 9
-            },
-            {
-                nome: "Sabonete",
-                icone: "🧼",
-                corredor: 9
-            }
+            {nome:"Sabonete",icone:"🧼",corredor:11},
+            {nome:"Shampoo",icone:"🧴",corredor:11},
+            {nome:"Condicionador",icone:"🧴",corredor:11},
+            {nome:"Creme dental",icone:"🪥",corredor:11},
+            {nome:"Escova de dentes",icone:"🪥",corredor:11},
+            {nome:"Fio dental",icone:"🦷",corredor:11},
+            {nome:"Enxaguante bucal",icone:"🧴",corredor:11},
+            {nome:"Desodorante",icone:"🧴",corredor:11},
+            {nome:"Algodão",icone:"☁️",corredor:11},
+            {nome:"Cotonete",icone:"🧴",corredor:11},
+            {nome:"Papel higiênico",icone:"🧻",corredor:12},
+            {nome:"Lenço de papel",icone:"🧻",corredor:12}
+        ],
+        "Limpeza": [
+            {nome:"Detergente",icone:"🧴",corredor:13},
+            {nome:"Sabão em pó",icone:"🧼",corredor:13},
+            {nome:"Sabão líquido",icone:"🧴",corredor:13},
+            {nome:"Amaciante",icone:"🧴",corredor:13},
+            {nome:"Água sanitária",icone:"🧴",corredor:13},
+            {nome:"Desinfetante",icone:"🧴",corredor:13},
+            {nome:"Limpa-vidros",icone:"🧴",corredor:13},
+            {nome:"Limpador multiuso",icone:"🧴",corredor:13},
+            {nome:"Esponja",icone:"🧽",corredor:13},
+            {nome:"Palha de aço",icone:"🧽",corredor:13},
+            {nome:"Saco de lixo",icone:"🗑️",corredor:13},
+            {nome:"Vassoura",icone:"🧹",corredor:13},
+            {nome:"Rodo",icone:"🧹",corredor:13},
+            {nome:"Pano de chão",icone:"🧹",corredor:13}
+        ],
+        "Casa": [
+            {nome:"Papel toalha",icone:"🧻",corredor:14},
+            {nome:"Guardanapo",icone:"🧻",corredor:14},
+            {nome:"Papel alumínio",icone:"📦",corredor:14},
+            {nome:"Filme plástico",icone:"📦",corredor:14},
+            {nome:"Palito de dente",icone:"🪥",corredor:14},
+            {nome:"Fósforo",icone:"🔥",corredor:14},
+            {nome:"Vela",icone:"🕯️",corredor:14}
+        ],
+        "Pet shop": [
+            {nome:"Ração para cachorro",icone:"🐶",corredor:15},
+            {nome:"Ração para gato",icone:"🐱",corredor:15},
+            {nome:"Petisco para cachorro",icone:"🦴",corredor:15},
+            {nome:"Petisco para gato",icone:"🐱",corredor:15},
+            {nome:"Areia para gato",icone:"🐈",corredor:15},
+            {nome:"Tapete higiênico",icone:"🐶",corredor:15}
         ]
     };
 
@@ -632,117 +753,176 @@
     let compras = {};
     let categoriaAtual = Object.keys(categorias)[0];
     let corredoresPercorridos = new Set();
+    let produtosPegos = new Set();
+
+    // =========================================================
+    // MARCAR PRODUTO COMO PEGO
+    // =========================================================
+    function alternarProdutoPego(nome) {
+        if (produtosPegos.has(nome)) {
+            produtosPegos.delete(nome);
+        } else {
+            produtosPegos.add(nome);
+        }
+        atualizarRota();
+    }
 
     // =========================================================
     // CATEGORIAS
     // =========================================================
     function criarCategorias() {
-        const container =document.getElementById("categorias");
+        const container = document.getElementById("categorias");
         container.innerHTML = "";
 
         Object.keys(categorias).forEach(categoria => {
-                const button = document.createElement("button");
-                button.className = "categoria-btn";
+            const button = document.createElement("button");
+            button.className = "categoria-btn";
 
-                if (categoria === categoriaAtual) {
-                    button.classList.add("ativa");
-                }
+            if (categoria === categoriaAtual) {
+                button.classList.add("ativa");
+            }
 
-                button.textContent = categoria;
-                button.onclick = () => {
-                    categoriaAtual =categoria;
-                    criarCategorias();
-                    mostrarProdutos();
-                };
-                container.appendChild(button);
-            });
+            button.textContent = categoria;
+            button.onclick = () => {
+                categoriaAtual = categoria;
+                document.getElementById("busca").value = "";
+                criarCategorias();
+                mostrarProdutos();
+            };
+            container.appendChild(button);
+        });
     }
 
     // =========================================================
     // SETAS DAS CATEGORIAS
     // =========================================================
-
     function moverCategorias(direcao) {
         const container = document.getElementById("categorias");
-        const distancia = Math.max(160, container.clientWidth * 0.75);
+        const distancia =Math.max(160, container.clientWidth * 0.75);
+        container.scrollBy({left: direcao * distancia, behavior: "smooth"});
+    }
 
-        container.scrollBy({left:direcao *distancia, behavior: "smooth"});
+    // =========================================================
+    // NORMALIZAR TEXTO
+    // Permite buscar sem se preocupar com acentos.
+    // =========================================================
+    function normalizarTexto(texto) {
+        return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     }
 
     // =========================================================
     // MOSTRAR PRODUTOS
     // =========================================================
     function mostrarProdutos() {
-        const container = document.getElementById("produtos");
+        const container =document.getElementById("produtos");
+        const busca =normalizarTexto(document.getElementById("busca").value.trim());
 
         container.innerHTML = "";
-        categorias[categoriaAtual].forEach(produto => {
+        let produtosExibidos = [];
 
-                const quantidade =compras[produto.nome] || 0;
-                const card = document.createElement("div");
-
-                card.className = "produto-card";
-
-                if (quantidade > 0) {
-                    card.classList.add("ativo");
+        // -----------------------------------------------------
+        // BUSCA GLOBAL
+        // -----------------------------------------------------
+        if (busca) {
+            Object.entries(categorias).forEach(([categoria, produtos]) => {
+                    produtos.forEach(produto => {
+                        if (normalizarTexto(produto.nome).includes(busca)) {
+                            produtosExibidos.push({...produto, categoria});
+                        }
+                    });
                 }
+            );
+            document.getElementById("categoriaNome").textContent = "Resultados da busca";
+            document.getElementById("categoriaQuantidade").textContent = `${produtosExibidos.length} produto(s)`;
+        }
 
-                card.innerHTML = `
+        // -----------------------------------------------------
+        // CATEGORIA ATUAL
+        // -----------------------------------------------------
+        else {
+            produtosExibidos = categorias[categoriaAtual];
+            document.getElementById("categoriaNome").textContent = categoriaAtual;
+            document.getElementById("categoriaQuantidade").textContent = `${produtosExibidos.length} produtos`;
+        }
 
-                    <div class="produto-icone">
-                        ${produto.icone}
+        // -----------------------------------------------------
+        // NENHUM RESULTADO
+        // -----------------------------------------------------
+        if (produtosExibidos.length === 0) {
+            container.innerHTML = `
+                <div class="sem-resultados">
+                    🔎<br><br>
+                    Nenhum produto encontrado.
+                </div>
+            `;
+            return;
+        }
+
+        // -----------------------------------------------------
+        // CRIAR CARDS
+        // -----------------------------------------------------
+        produtosExibidos.forEach(produto => {
+            const quantidade = compras[produto.nome] || 0;
+            const card = document.createElement("div");
+            card.className = "produto-card";
+
+            if (quantidade > 0) {
+                card.classList.add("ativo");
+            }
+
+            card.innerHTML = `
+                <div class="produto-icone">
+                    ${produto.icone}
+                </div>
+
+                <div class="produto-nome">
+                    ${produto.nome}
+                </div>
+
+                <div class="produto-controle">
+
+                    <button
+                        type="button"
+                        aria-label="Diminuir ${produto.nome}"
+                        onclick="alterarQuantidade('${produto.nome}', -1)"
+                    >
+                        −
+                    </button>
+
+                    <div class="quantidade">
+                        ${quantidade}
                     </div>
 
-                    <div class="produto-nome">
-                        ${produto.nome}
-                    </div>
+                    <button
+                        type="button"
+                        aria-label="Adicionar ${produto.nome}"
+                        onclick="alterarQuantidade('${produto.nome}', 1)"
+                    >
+                        +
+                    </button>
 
-                    <div class="produto-corredor">
-                        Corredor
-                        ${produto.corredor}
-                    </div>
-
-                    <div class="produto-controle">
-
-                        <button
-                            onclick="alterarQuantidade('${produto.nome}', -1)"
-                        >
-                            −
-                        </button>
-
-                        <div class="quantidade">
-                            ${quantidade}
-                        </div>
-
-                        <button
-                            onclick=" alterarQuantidade('${produto.nome}', 1)"
-                        >
-                            +
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+                </div>
+            `;
+            container.appendChild(card);
+        });
     }
 
     // =========================================================
     // ALTERAR QUANTIDADE
     // =========================================================
     function alterarQuantidade(nome, valor) {
-    
         const quantidadeAtual = compras[nome] || 0;
         const novaQuantidade = Math.max(0, quantidadeAtual + valor);
 
         if (novaQuantidade === 0) {
             delete compras[nome];
-        }
 
-        else {
+        } else {
             compras[nome] = novaQuantidade;
-        }
 
+        }
         // Se voltar a adicionar algo
-        // de um corredor que já foi percorrido,
+        // de um corredor já percorrido,
         // o corredor volta para a rota.
 
         const produto = encontrarProduto(nome);
@@ -758,18 +938,14 @@
     // ENCONTRAR PRODUTO
     // =========================================================
     function encontrarProduto(nome) {
-
         for (const categoria of Object.values(categorias)) {
-            const produto = categoria.find(
-                    item => item.nome === nome
-                );
+            const produto =categoria.find(item => item.nome === nome);
 
             if (produto) {
                 return produto;
             }
         }
         return null;
-
     }
 
     // =========================================================
@@ -778,9 +954,8 @@
     function alternarCorredor(corredor) {
         if (corredoresPercorridos.has(corredor)) {
             corredoresPercorridos.delete(corredor);
-        }
 
-        else {
+        } else {
             corredoresPercorridos.add(corredor);
         }
 
@@ -804,11 +979,11 @@
     function atualizarResumo() {
 
         const produtos = Object.entries(compras);
-        const totalItens = produtos.reduce((total, [, quantidade]) => total + quantidade, 0);
+        const totalItens =produtos.reduce((total, [, quantidade]) => total + quantidade, 0);
         const corredores = new Set();
 
         produtos.forEach(([nome]) => {
-                const produto = encontrarProduto(nome);
+                const produto =encontrarProduto(nome);
 
                 if (produto) {
                     corredores.add(produto.corredor);
@@ -817,18 +992,18 @@
         );
         document.getElementById("totalItens").textContent = totalItens;
         document.getElementById("totalCorredores").textContent = corredores.size;
-        document.getElementById("corredoresPercorridos").textContent = [...corredoresPercorridos].filter(corredor =>corredores.has(corredor)).length;
+        document.getElementById("corredoresPercorridos").textContent = [...corredoresPercorridos].filter(corredor => corredores.has(corredor)).length;
     }
 
     // =========================================================
     // ROTA
     // =========================================================
     function atualizarRota() {
-
         const container = document.getElementById("rota");
         const produtosSelecionados = Object.entries(compras);
 
         if (produtosSelecionados.length === 0) {
+
             container.innerHTML = `
                 <div class="rota-vazia">
                     🛒
@@ -837,31 +1012,29 @@
                 </div>
             `;
             return;
-
         }
 
         // -----------------------------------------------------
-        // Agrupar produtos por corredor
+        // AGRUPAR PRODUTOS POR CORREDOR
         // -----------------------------------------------------
         const mapa = {};
-        produtosSelecionados.forEach(
-                ([nome, quantidade]) => {
-                    const produto =encontrarProduto(nome);
+        produtosSelecionados.forEach(([nome, quantidade]) => {
+                const produto = encontrarProduto(nome);
 
-                    if (!produto) {
-                        return;
-                    }
-
-                    if (!mapa[produto.corredor]) {
-                        mapa[produto.corredor] = [];
-                    }
-
-                    mapa[produto.corredor].push({...produto,quantidade});
+                if (!produto) {
+                    return;
                 }
-            );
+
+                if (!mapa[produto.corredor]) {
+                    mapa[produto.corredor] = [];
+                }
+
+                mapa[produto.corredor].push({...produto, quantidade});
+            }
+        );
 
         // -----------------------------------------------------
-        // Ordenar corredores
+        // ORDENAR CORREDORES
         // -----------------------------------------------------
         const corredores = Object.keys(mapa).map(Number).sort((a, b) => a - b);
 
@@ -872,82 +1045,103 @@
         `;
 
         // -----------------------------------------------------
-        // Criar corredores
+        // CRIAR CORREDORES
         // -----------------------------------------------------
-        corredores.forEach(
-            corredor => {
-                const percorrido = corredoresPercorridos.has(corredor);
+        corredores.forEach(corredor => {
+            const percorrido = corredoresPercorridos.has(corredor);
+            const produtosDoCorredor = mapa[corredor];
+            const totalProdutos = produtosDoCorredor.length;
+            const produtosPegosNoCorredor = produtosDoCorredor.filter(produto => produtosPegos.has(produto.nome)).length;
+
+            html += `
+                <div
+                    class="
+                        corredor
+                        ${percorrido ? "percorrido" : ""}
+                    "
+                >
+                    <div class="corredor-topo">
+                        <div class="corredor-titulo">
+                            📍 Corredor ${corredor}
+                        </div>
+                        
+                        <label class="corredor-check">
+                            <input
+                                type="checkbox"
+                                ${percorrido ? "checked" : ""}
+                                onchange="
+                                    alternarCorredor(
+                                        ${corredor}
+                                    )
+                                "
+                            >
+                            Já passei
+                        </label>
+                    </div>
+
+                    <div class="rota-progresso">
+                        ${produtosPegosNoCorredor}
+                        de
+                        ${totalProdutos}
+                        produtos pegos
+                    </div>
+            `;
+
+            // -------------------------------------------------
+            // PRODUTOS
+            // -------------------------------------------------
+            produtosDoCorredor.forEach(produto => {
+                const pego = produtosPegos.has(produto.nome);
                 html += `
-                    <div
+                    <label
                         class="
-                            corredor
-                            ${
-                                percorrido
-                                    ? "percorrido"
-                                    : ""
-                            }
+                            rota-produto
+                            ${pego
+                                ? "quantidade-finalizada"
+                                : ""}
                         "
                     >
-                        <div
-                            class="corredor-topo"
+                        <input
+                            class="rota-produto-check"
+                            type="checkbox"
+                            ${pego ? "checked" : ""}
+                            onchange="
+                                alternarProdutoPego(
+                                    '${produto.nome}'
+                                )
+                            "
                         >
-                            <div
-                                class="corredor-titulo"
-                            >
-                                📍 Corredor
-                                ${corredor}
-                            </div>
-                            <label
-                                class="corredor-check"
-                            >
-                                <input
-                                    type="checkbox"
-                                    ${
-                                        percorrido
-                                            ? "checked"
-                                            : ""
-                                    }
-                                    onchange="
-                                        alternarCorredor(
-                                            ${corredor}
-                                        )
-                                    "
-                                >
-                                Já passei
-                            </label>
-                        </div>
+                        <span class="rota-produto-info">
+                            <span>
+                                ${produto.icone}
+                            </span>
+                            <span class="rota-produto-nome">
+                                ${produto.nome}
+                                ×
+                                ${produto.quantidade}
+                            </span>
+                        </span>
+                    </label>
                 `;
+            });
 
-                mapa[corredor].forEach(
-                        produto => {
-                            html += `
-                                <div
-                                    class="rota-produto"
-                                >
-                                    ${produto.icone}
-                                    ${produto.nome}
-                                    ×
-                                    ${produto.quantidade}
-                                </div>
-
-                            `;
-                        }
-                    );
-
-                html += `
-                    </div>
-                `;
-            }
-        );
+            html += `
+                </div>
+            `;
+        });
 
         html += `
             <div class="caixa">
                 🏁 Caixa
             </div>
         `;
-
         container.innerHTML = html;
     }
+
+    // =========================================================
+    // BUSCA EM TEMPO REAL
+    // =========================================================
+    document.getElementById("busca").addEventListener("input",mostrarProdutos);
 
     // =========================================================
     // INICIALIZAÇÃO
