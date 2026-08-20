@@ -10,3 +10,10 @@ O sistema organiza os produtos, indica em quais corredores eles estão e guia vo
 - 🎯 Mais praticidade para suas compras.<br>
 
 https://tmallmann.github.io/shopping-route/
+
+<br>
+
+Implementar:<br>
+· Customização de corredores;
+· Comparação de preços;
+· Histórico de compras;
