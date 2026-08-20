@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Minha Rota de Compras</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+            background: #f4f5f7;
+            color: #20242c;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .app {
+            max-width: 540px;
+            min-height: 100vh;
+            margin: auto;
+            background: white;
+        }
+
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
+        header {
+            padding: 26px 20px 18px;
+        }
+
+        header h1 {
+            font-size: 27px;
+            font-weight: 750;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #858b96;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           RESUMO
+        ===================================================== */
+        .resumo {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 18px 18px;
+        }
+
+        .resumo-card {
+            background: #f5f6f8;
+            border-radius: 15px;
+            padding: 13px 6px;
+            text-align: center;
+        }
+
+        .resumo-card strong {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .resumo-card span {
+            color: #858b96;
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           CONTEÚDO
+        ===================================================== */
+        main {
+            padding: 0 18px 100px;
+        }
+
+        .titulo-secao {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+
+        /* =====================================================
+           CATEGORIAS
+        ===================================================== */
+        .categorias-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .seta-categoria {
+            flex-shrink: 0;
+            width: 34px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: #f0f1f3;
+            color: #333;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seta-categoria:hover {
+            background: #e3e4e7;
+        }
+
+        .categorias {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            flex: 1;
+            scrollbar-width: none;
+            padding: 2px 0;
+        }
+
+        .categorias::-webkit-scrollbar {
+            display: none;
+        }
+
+        .categoria-btn {
+            flex-shrink: 0;
+            border: none;
+            background: #f1f2f4;
+            border-radius: 12px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #626873;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .categoria-btn.ativa {
+            background: #171a20;
+            color: white;
+        }
+
+        /* =====================================================
+           PRODUTOS
+        ===================================================== */
+        .produtos-grid {
+            display: grid;
+            grid-template-columns:
+                1fr 1fr;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .produto-card {
+            border: 1px solid #e8e9ec;
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            transition: 0.15s;
+        }
+
+        .produto-card.ativo {
+            background: #f5f6f7;
+            border-color: #cfd2d8;
+        }
+
+        .produto-icone {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .produto-nome {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .produto-corredor {
+            color: #8a909a;
+            font-size: 11px;
+            margin-bottom: 13px;
+        }
+
+        /* =====================================================
+           CONTROLE DO PRODUTO
+        ===================================================== */
+        .produto-controle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #eef0f2;
+            border-radius: 11px;
+            overflow: hidden;
+        }
+
+        .produto-controle button {
+            width: 38px;
+            height: 34px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 20px;
+            color: #20242c;
+        }
+
+        .produto-controle button:hover {
+            background: #e1e3e6;
+        }
+
+        .quantidade {
+            min-width: 30px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           ROTA
+        ===================================================== */
+        .rota-container {
+            margin-top: 10px;
+        }
+
+        .rota-vazia {
+            text-align: center;
+            padding: 30px 15px;
+            background: #f7f7f8;
+            border-radius: 16px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .entrada,
+        .caixa {
+            text-align: center;
+            padding: 15px;
+            border-radius: 14px;
+            font-weight: 700;
+        }
+
+        .entrada {
+            background: #f1f2f4;
+            margin-bottom: 10px;
+        }
+
+        .caixa {
+            background: #171a20;
+            color: white;
+            margin-top: 10px;
+        }
+
+        /* =====================================================
+           CORREDOR
+        ===================================================== */
+        .corredor {
+            background: #f7f7f8;
+            border: 1px solid #e7e8eb;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 10px 0;
+            position: relative;
+            transition: 0.2s;
+
+        }
+
+        .corredor.percorrido {
+            background: #eef0f1;
+            border-color: #d5d7db;
+            opacity: 0.65;
+        }
+
+        .corredor-topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .corredor-titulo {
+            font-weight: 700;
+        }
+
+        .corredor-check {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: #777;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .corredor-check input {
+            width: 19px;
+            height: 19px;
+            accent-color: #171a20;
+            cursor: pointer;
+        }
+
+        .corredor.percorrido
+        .corredor-titulo {
+            text-decoration: line-through;
+            color: #8c9098;
+        }
+
+        .corredor:not(:last-of-type)::after {
+            content: "↓";
+            position: absolute;
+            left: 50%;
+            bottom: -23px;
+            color: #aaa;
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        /* =====================================================
+           PRODUTOS NA ROTA
+        ===================================================== */
+        .rota-produto {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 0;
+            color: #666;
+            font-size: 13px;
+
+        }
+        .corredor.percorrido
+        .rota-produto {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+        @media (max-width: 390px) {.produtos-grid {grid-template-columns: 1fr;}}
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
+
+    <header>
+        <h1>
+            🛒 Minha compra
+        </h1>
+        <p>
+            Selecione os produtos que deseja comprar.
+        </p>
+    </header>
+
+    <!-- =====================================================
+         RESUMO
+    ====================================================== -->
+    <div class="resumo">
+        <div class="resumo-card">
+            <strong id="totalItens">
+                0
+            </strong>
+            <span>
+                Itens
+            </span>
+        </div>
+
+        <div class="resumo-card">
+            <strong id="totalCorredores">
+                0
+            </strong>
+            <span>
+                Corredores
+            </span>
+        </div>
+
+        <div class="resumo-card">
+            <strong id="corredoresPercorridos">
+                0
+            </strong>
+            <span>
+                Percorridos
+            </span>
+        </div>
+    </div>
+    <main>
+
+        <!-- =================================================
+             CATEGORIAS
+        ================================================== -->
+        <h2 class="titulo-secao">
+            Escolha os produtos
+        </h2>
+
+        <div class="categorias-wrapper">
+
+            <button
+                class="seta-categoria"
+                onclick="moverCategorias(-1)"
+                aria-label="Categorias anteriores"
+            >
+                ‹
+            </button>
+
+            <div
+                id="categorias"
+                class="categorias"
+            ></div>
+
+            <button
+                class="seta-categoria"
+                onclick="moverCategorias(1)"
+                aria-label="Próximas categorias"
+            >
+                ›
+            </button>
+        </div>
+
+        <!-- =================================================
+             PRODUTOS
+        ================================================== -->
+        <div
+            id="produtos"
+            class="produtos-grid"
+        ></div>
+
+        <!-- =================================================
+             ROTA
+        ================================================== -->
+        <div class="rota-container">
+
+            <h2 class="titulo-secao">
+                🚶 Sua rota
+            </h2>
+
+            <div id="rota">
+
+                <div class="rota-vazia">
+                    Escolha os produtos acima para montar sua rota.
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+
+    // =========================================================
+    // PRODUTOS
+    // =========================================================
+    const categorias = {
+        "Frutas e verduras": [
+            {
+                nome: "Banana",
+                icone: "🍌",
+                corredor: 1
+            },
+            {
+                nome: "Maçã",
+                icone: "🍎",
+                corredor: 1
+            },
+            {
+                nome: "Tomate",
+                icone: "🍅",
+                corredor: 1
+            },
+            {
+                nome: "Batata",
+                icone: "🥔",
+                corredor: 1
+            }
+        ],
+
+        "Laticínios": [
+            {
+                nome: "Leite",
+                icone: "🥛",
+                corredor: 2
+            },
+            {
+                nome: "Queijo",
+                icone: "🧀",
+                corredor: 2
+            },
+            {
+                nome: "Iogurte",
+                icone: "🥛",
+                corredor: 2
+            },
+            {
+                nome: "Manteiga",
+                icone: "🧈",
+                corredor: 2
+            }
+        ],
+
+        "Bebidas": [
+            {
+                nome: "Café",
+                icone: "☕",
+                corredor: 3
+            },
+            {
+                nome: "Suco",
+                icone: "🧃",
+                corredor: 7
+            },
+            {
+                nome: "Refrigerante",
+                icone: "🥤",
+                corredor: 7
+            },
+            {
+                nome: "Água",
+                icone: "💧",
+                corredor: 7
+            }
+        ],
+
+        "Biscoitos e cereais": [
+            {
+                nome: "Biscoito",
+                icone: "🍪",
+                corredor: 4
+            },
+            {
+                nome: "Cereal",
+                icone: "🥣",
+                corredor: 4
+            },
+            {
+                nome: "Bolacha",
+                icone: "🍪",
+                corredor: 4
+            }
+        ],
+
+        "Mercearia": [
+            {
+                nome: "Arroz",
+                icone: "🍚",
+                corredor: 5
+            },
+            {
+                nome: "Feijão",
+                icone: "🫘",
+                corredor: 5
+            },
+            {
+                nome: "Açúcar",
+                icone: "🍬",
+                corredor: 5
+            },
+            {
+                nome: "Macarrão",
+                icone: "🍝",
+                corredor: 6
+            },
+            {
+                nome: "Lasanha",
+                icone: "🍝",
+                corredor: 6
+            }
+        ],
+
+        "Limpeza": [
+            {
+                nome: "Detergente",
+                icone: "🧴",
+                corredor: 8
+            },
+            {
+                nome: "Sabão em pó",
+                icone: "🧼",
+                corredor: 8
+            },
+            {
+                nome: "Esponja",
+                icone: "🧽",
+                corredor: 8
+            }
+
+        ],
+
+        "Higiene": [
+            {
+                nome: "Papel higiênico",
+                icone: "🧻",
+                corredor: 9
+            },
+            {
+                nome: "Shampoo",
+                icone: "🧴",
+                corredor: 9
+            },
+            {
+                nome: "Sabonete",
+                icone: "🧼",
+                corredor: 9
+            }
+        ]
+    };
+
+    // =========================================================
+    // ESTADO
+    // =========================================================
+    let compras = {};
+    let categoriaAtual = Object.keys(categorias)[0];
+    let corredoresPercorridos = new Set();
+
+    // =========================================================
+    // CATEGORIAS
+    // =========================================================
+    function criarCategorias() {
+        const container =document.getElementById("categorias");
+        container.innerHTML = "";
+
+        Object.keys(categorias).forEach(categoria => {
+                const button = document.createElement("button");
+                button.className = "categoria-btn";
+
+                if (categoria === categoriaAtual) {
+                    button.classList.add("ativa");
+                }
+
+                button.textContent = categoria;
+                button.onclick = () => {
+                    categoriaAtual =categoria;
+                    criarCategorias();
+                    mostrarProdutos();
+                };
+                container.appendChild(button);
+            });
+    }
+
+    // =========================================================
+    // SETAS DAS CATEGORIAS
+    // =========================================================
+
+    function moverCategorias(direcao) {
+        const container = document.getElementById("categorias");
+        const distancia = Math.max(160, container.clientWidth * 0.75);
+
+        container.scrollBy({left:direcao *distancia, behavior: "smooth"});
+    }
+
+    // =========================================================
+    // MOSTRAR PRODUTOS
+    // =========================================================
+    function mostrarProdutos() {
+        const container = document.getElementById("produtos");
+
+        container.innerHTML = "";
+        categorias[categoriaAtual].forEach(produto => {
+
+                const quantidade =compras[produto.nome] || 0;
+                const card = document.createElement("div");
+
+                card.className = "produto-card";
+
+                if (quantidade > 0) {
+                    card.classList.add("ativo");
+                }
+
+                card.innerHTML = `
+
+                    <div class="produto-icone">
+                        ${produto.icone}
+                    </div>
+
+                    <div class="produto-nome">
+                        ${produto.nome}
+                    </div>
+
+                    <div class="produto-corredor">
+                        Corredor
+                        ${produto.corredor}
+                    </div>
+
+                    <div class="produto-controle">
+
+                        <button
+                            onclick="alterarQuantidade('${produto.nome}', -1)"
+                        >
+                            −
+                        </button>
+
+                        <div class="quantidade">
+                            ${quantidade}
+                        </div>
+
+                        <button
+                            onclick=" alterarQuantidade('${produto.nome}', 1)"
+                        >
+                            +
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+    }
+
+    // =========================================================
+    // ALTERAR QUANTIDADE
+    // =========================================================
+    function alterarQuantidade(nome, valor) {
+    
+        const quantidadeAtual = compras[nome] || 0;
+        const novaQuantidade = Math.max(0, quantidadeAtual + valor);
+
+        if (novaQuantidade === 0) {
+            delete compras[nome];
+        }
+
+        else {
+            compras[nome] = novaQuantidade;
+        }
+
+        // Se voltar a adicionar algo
+        // de um corredor que já foi percorrido,
+        // o corredor volta para a rota.
+
+        const produto = encontrarProduto(nome);
+
+        if (produto && novaQuantidade > 0) {
+            corredoresPercorridos.delete(produto.corredor);
+        }
+
+        atualizar();
+    }
+
+    // =========================================================
+    // ENCONTRAR PRODUTO
+    // =========================================================
+    function encontrarProduto(nome) {
+
+        for (const categoria of Object.values(categorias)) {
+            const produto = categoria.find(
+                    item => item.nome === nome
+                );
+
+            if (produto) {
+                return produto;
+            }
+        }
+        return null;
+
+    }
+
+    // =========================================================
+    // MARCAR CORREDOR
+    // =========================================================
+    function alternarCorredor(corredor) {
+        if (corredoresPercorridos.has(corredor)) {
+            corredoresPercorridos.delete(corredor);
+        }
+
+        else {
+            corredoresPercorridos.add(corredor);
+        }
+
+        atualizarRota();
+        atualizarResumo();
+    }
+
+    // =========================================================
+    // ATUALIZAR
+    // =========================================================
+    function atualizar() {
+        atualizarResumo();
+        mostrarProdutos();
+        atualizarRota();
+
+    }
+
+    // =========================================================
+    // RESUMO
+    // =========================================================
+    function atualizarResumo() {
+
+        const produtos = Object.entries(compras);
+        const totalItens = produtos.reduce((total, [, quantidade]) => total + quantidade, 0);
+        const corredores = new Set();
+
+        produtos.forEach(([nome]) => {
+                const produto = encontrarProduto(nome);
+
+                if (produto) {
+                    corredores.add(produto.corredor);
+                }
+            }
+        );
+        document.getElementById("totalItens").textContent = totalItens;
+        document.getElementById("totalCorredores").textContent = corredores.size;
+        document.getElementById("corredoresPercorridos").textContent = [...corredoresPercorridos].filter(corredor =>corredores.has(corredor)).length;
+    }
+
+    // =========================================================
+    // ROTA
+    // =========================================================
+    function atualizarRota() {
+
+        const container = document.getElementById("rota");
+        const produtosSelecionados = Object.entries(compras);
+
+        if (produtosSelecionados.length === 0) {
+            container.innerHTML = `
+                <div class="rota-vazia">
+                    🛒
+                    <br><br>
+                    Selecione os produtos para montar sua rota.
+                </div>
+            `;
+            return;
+
+        }
+
+        // -----------------------------------------------------
+        // Agrupar produtos por corredor
+        // -----------------------------------------------------
+        const mapa = {};
+        produtosSelecionados.forEach(
+                ([nome, quantidade]) => {
+                    const produto =encontrarProduto(nome);
+
+                    if (!produto) {
+                        return;
+                    }
+
+                    if (!mapa[produto.corredor]) {
+                        mapa[produto.corredor] = [];
+                    }
+
+                    mapa[produto.corredor].push({...produto,quantidade});
+                }
+            );
+
+        // -----------------------------------------------------
+        // Ordenar corredores
+        // -----------------------------------------------------
+        const corredores = Object.keys(mapa).map(Number).sort((a, b) => a - b);
+
+        let html = `
+            <div class="entrada">
+                🛒 Entrada
+            </div>
+        `;
+
+        // -----------------------------------------------------
+        // Criar corredores
+        // -----------------------------------------------------
+        corredores.forEach(
+            corredor => {
+                const percorrido = corredoresPercorridos.has(corredor);
+                html += `
+                    <div
+                        class="
+                            corredor
+                            ${
+                                percorrido
+                                    ? "percorrido"
+                                    : ""
+                            }
+                        "
+                    >
+                        <div
+                            class="corredor-topo"
+                        >
+                            <div
+                                class="corredor-titulo"
+                            >
+                                📍 Corredor
+                                ${corredor}
+                            </div>
+                            <label
+                                class="corredor-check"
+                            >
+                                <input
+                                    type="checkbox"
+                                    ${
+                                        percorrido
+                                            ? "checked"
+                                            : ""
+                                    }
+                                    onchange="
+                                        alternarCorredor(
+                                            ${corredor}
+                                        )
+                                    "
+                                >
+                                Já passei
+                            </label>
+                        </div>
+                `;
+
+                mapa[corredor].forEach(
+                        produto => {
+                            html += `
+                                <div
+                                    class="rota-produto"
+                                >
+                                    ${produto.icone}
+                                    ${produto.nome}
+                                    ×
+                                    ${produto.quantidade}
+                                </div>
+
+                            `;
+                        }
+                    );
+
+                html += `
+                    </div>
+                `;
+            }
+        );
+
+        html += `
+            <div class="caixa">
+                🏁 Caixa
+            </div>
+        `;
+
+        container.innerHTML = html;
+    }
+
+    // =========================================================
+    // INICIALIZAÇÃO
+    // =========================================================
+    criarCategorias();
+    mostrarProdutos();
+    atualizar();
+
+</script>
+</body>
+</html>
