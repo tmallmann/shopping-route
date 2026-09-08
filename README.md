@@ -15,6 +15,5 @@ https://tmallmann.github.io/shopping-route/
 <sub>
 Implementar:<br>
 · Customização de corredores;
-· Comparação de preços;
 · Histórico de compras;
 </sub>
